@@ -1,15 +1,13 @@
 <template>
     <main id="todos">
         <header>
-            <h1>TEFLON</h1>
-            <p>När det har svårt att fastna...</p>
+            <h1>Todo List</h1>
         </header>
         <section class="content">
-          
-            <todo v-for="(todoData, index) in todos" :key="index" :todo="todoData"  />
+            <todo v-for="(todoData, index) in todos" :key="index" :index="index" :todo="todoData" />
         </section>
         <footer>
-            <a href="#" class="btn">Slide to add new</a>
+            <a href="#" class="btn" v-touch:swipe.left="swipe">Swipe to add new</a>
         </footer>
     </main>
 </template>
@@ -18,7 +16,16 @@
 import todo from '@/components/Todo';
 export default {
     name: 'todos',
-    props: ['todos'],
+    computed: {
+        todos(){
+            return this.$store.state.todos;
+        }
+    },
+    methods: {
+        swipe(){
+            this.$store.commit('swipe', 1);
+        }
+    },
     components: {
         todo
     }
@@ -33,10 +40,7 @@ export default {
                 padding: 0;
                 font-weight: 700;
             }
-            p {
-                margin: 0;
-                font-style: italic;
-            }
+  
         }
         footer {
             display: flex;
